@@ -1,8 +1,8 @@
 import { CreatePersonPostData, Person } from "@app/types/person";
-import DB from ".";
-import DBUtil from "./util";
+import DB from "../index";
+import Util from "../util";
 
-class PersonDB {
+class UserDB {
   static setup() {
     return `CREATE TABLE if not exists Person (
     id serial primary key,
@@ -22,9 +22,9 @@ class PersonDB {
       `INSERT INTO Person (uuid, name, job, created_at) 
        VALUES ($1, $2, $3, $4 )
        RETURNING *`,
-      [DBUtil.makeUUID(), person.name, person.job, DBUtil.makeUTCNow()]
+      [Util.makeUUID(), person.name, person.job, Util.makeUTCNow()]
     );
   }
 }
 
-export default PersonDB;
+export default UserDB;

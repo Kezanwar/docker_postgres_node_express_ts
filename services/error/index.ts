@@ -7,7 +7,7 @@ class APIError extends Error {
     this.code = code;
   }
 
-  get response(): ErrResp {
+  get json_response(): ErrResp {
     return { message: this.message, code: this.code };
   }
 }
@@ -24,7 +24,7 @@ class Err {
   static send(error: unknown, res: ResBody<ErrResp>) {
     this.errorHandler(error, (err) => {
       res.statusCode = err.code;
-      res.json(err.response);
+      res.json(err.json_response);
     });
   }
 

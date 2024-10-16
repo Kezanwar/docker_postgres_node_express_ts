@@ -1,6 +1,6 @@
 import express from "express";
 import morganBody from "morgan-body";
-import DB, { connectDB } from "@app/services/db";
+import { connectDB } from "@app/services/db";
 import Routes from "@app/routes";
 import { ResBody } from "@app/types/controller";
 

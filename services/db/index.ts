@@ -3,7 +3,7 @@ import PersonDB from "./person";
 
 const { Pool } = pg;
 
-const db = new Pool({
+const DB = new Pool({
   host: "db",
   port: 5432,
   user: "user123",
@@ -13,9 +13,9 @@ const db = new Pool({
 
 export async function connectDB() {
   try {
-    await db.connect();
+    await DB.connect();
     const queries = [PersonDB].map((table) => table.setup()).join();
-    await db.query(queries);
+    await DB.query(queries);
     console.log("Postgres connected ✅");
   } catch (error) {
     console.error("Postgres failed to connect ❌");
@@ -23,4 +23,4 @@ export async function connectDB() {
   }
 }
 
-export default db;
+export default DB;
