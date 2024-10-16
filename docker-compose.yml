@@ -16,6 +16,8 @@ services:
           target: /usr/src/app
           ignore:
             - node_modules/
+            - .git
+            - .gitignore
         - action: rebuild
           path: ./package.json
     ports:
