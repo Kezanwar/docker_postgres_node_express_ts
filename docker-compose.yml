@@ -8,5 +8,15 @@ services:
       POSTGRES_DB: db123
   app:
     image: docker_postgres_node_express_ts
+    build: .
+    develop:
+      watch:
+        - action: sync+restart
+          path: ./
+          target: /usr/src/app
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: ./package.json
     ports:
       - 1337:1337

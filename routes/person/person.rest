@@ -3,5 +3,5 @@
 POST http://localhost:1337/api/person
 Content-Type: application/json
 
-{"name": "Kez Anwar", "job": "Software Developer"}
+{"name": "Kez Anwar", "job": "Softwar Developer"}
 ###

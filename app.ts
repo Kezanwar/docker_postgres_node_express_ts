@@ -18,7 +18,7 @@ morganBody(app, { prettify: true, logIP: false, logReqUserAgent: false });
 
 /* register routes */
 app.get("/", (_, res: ResBody<string>) => {
-  res.json(`Hello from the app on port ${PORT}`);
+  res.json(`Hello from the app on s port ${PORT}`);
 });
 app.use("/api", Routes);
 
