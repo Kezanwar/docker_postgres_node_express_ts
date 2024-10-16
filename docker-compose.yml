@@ -7,6 +7,6 @@ services:
       POSTGRES_USER: user123
       POSTGRES_DB: db123
   app:
-    image: my-node-app
+    image: docker_postgres_node_express_ts
     ports:
       - 1337:1337
