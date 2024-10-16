@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.21.1",
+    "morgan-body": "^2.6.9",
     "pg": "^8.13.0"
   },
   "devDependencies": {

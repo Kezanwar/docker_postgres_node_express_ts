@@ -1,27 +1,26 @@
 import express from "express";
+import morganBody from "morgan-body";
 import DB from "@app/services/db";
-import { ReqBody, ResBody } from "@app/types/handlers";
+import Routes from "@app/routes";
+import { ResBody } from "@app/types/controller";
 
+/* start services */
+await DB.connect();
+await DB.setup();
+
+/* create app */
 const PORT = 1337;
-
 const app = express();
 
+/* init middlewares */
 app.use(express.json());
+morganBody(app, { prettify: true, logIP: false, logReqUserAgent: false });
 
-// await DB.connect();
-
-app.get("/", (_, res) => {
-  res.json(`Hello from the API on port ${PORT}`);
+/* register routes */
+app.get("/", (_, res: ResBody<string>) => {
+  res.json(`Hello from the app on port ${PORT}`);
 });
+app.use("/api", Routes);
 
-type TestPostBodyData = {
-  name: string;
-  job: string;
-};
-
-app.post("/", (req: ReqBody<TestPostBodyData>, res: ResBody<string>) => {
-  const { job, name } = req.body;
-  res.json(`Hello ${name} - ${job}`);
-});
-
+/* serve app */
 app.listen(PORT, () => console.log(`API running on port ${PORT} 🚀`));
