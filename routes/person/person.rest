@@ -1,6 +1,3 @@
-###
-GET http://localhost:1337
-###
 
 ###
 POST http://localhost:1337/api/person

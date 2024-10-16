@@ -5,8 +5,8 @@ import Routes from "@app/routes";
 import { ResBody } from "@app/types/controller";
 
 /* start services */
-await DB.connect();
-await DB.setup();
+// await DB.connect();
+// await DB.setup();
 
 /* create app */
 const PORT = 1337;
