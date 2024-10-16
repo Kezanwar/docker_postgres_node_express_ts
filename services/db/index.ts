@@ -1,5 +1,5 @@
-import { CreatePersonPostData } from "@app/types/person";
 import pg from "pg";
+import PersonDB from "./person";
 
 const { Pool } = pg;
 
@@ -11,26 +11,16 @@ const db = new Pool({
   database: "db123",
 });
 
-class DB {
-  static connect() {
-    return db.connect();
-  }
-
-  static setup() {
-    return db.query(`CREATE TABLE if not exists Person (
-    ID serial primary key,
-	Name varchar(50),
-    Job varchar(50),
-	CreatedAt timestamp
-)`);
-  }
-
-  static createPerson(person: CreatePersonPostData) {
-    return db.query(`INSERT INTO Person (name, job) VALUES ($1, $2)`, [
-      person.name,
-      person.job,
-    ]);
+export async function connectDB() {
+  try {
+    await db.connect();
+    const queries = [PersonDB].map((table) => table.setup()).join();
+    await db.query(queries);
+    console.log("Postgres connected ✅");
+  } catch (error) {
+    console.error("Postgres failed to connect ❌");
+    process.exit(1);
   }
 }
 
-export default DB;
+export default db;

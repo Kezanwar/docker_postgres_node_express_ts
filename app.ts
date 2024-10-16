@@ -1,12 +1,11 @@
 import express from "express";
 import morganBody from "morgan-body";
-import DB from "@app/services/db";
+import DB, { connectDB } from "@app/services/db";
 import Routes from "@app/routes";
 import { ResBody } from "@app/types/controller";
 
 /* start services */
-// await DB.connect();
-// await DB.setup();
+await connectDB();
 
 /* create app */
 const PORT = 1337;
