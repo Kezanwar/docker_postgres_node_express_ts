@@ -1,4 +1,4 @@
-import User, { TUser } from "@app/models/user";
+import User, { TUserClient } from "@app/models/user";
 import Err from "@app/services/error";
 import { ErrResp, ReqBody, ResBody } from "../types";
 
@@ -9,7 +9,10 @@ type CreateUserPostData = {
 };
 
 const UsersController = {
-  getAll: async (_: ReqBody<undefined>, res: ResBody<TUser[] | ErrResp>) => {
+  getAll: async (
+    _: ReqBody<undefined>,
+    res: ResBody<TUserClient[] | ErrResp>
+  ) => {
     try {
       const users = await User.getAll();
 
@@ -20,7 +23,7 @@ const UsersController = {
   },
   create: async (
     req: ReqBody<CreateUserPostData>,
-    res: ResBody<TUser | ErrResp>
+    res: ResBody<TUserClient | ErrResp>
   ) => {
     try {
       const { email, first_name, last_name } = req.body;

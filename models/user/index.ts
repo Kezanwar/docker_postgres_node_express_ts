@@ -97,7 +97,7 @@ class User {
 
   static async getAll(): Promise<TUser[]> {
     const search = await DB.query(
-      `SELECT uuid, first_name, last_name, email, created_at
+      `SELECT id, uuid, first_name, last_name, email, created_at
        FROM ${this.tableName} `,
       []
     );
