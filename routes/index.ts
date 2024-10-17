@@ -1,8 +1,8 @@
 import express from "express";
-import PersonRouter from "./person";
+import PersonRouter from "./user";
 
 const Routes = express.Router();
 
-Routes.use("/person", PersonRouter);
+Routes.use("/user", PersonRouter);
 
 export default Routes;

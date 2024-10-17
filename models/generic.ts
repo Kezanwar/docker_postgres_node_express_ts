@@ -3,8 +3,8 @@ import { QueryResultRow } from "pg";
 
 export class GenericModelMethods {
   static async findByID<T extends QueryResultRow>(
-    id: number,
-    modelName: string
+    modelName: string,
+    id: number
   ): Promise<T | null> {
     const result = await DB.query<T>(
       `SELECT * FROM ${modelName} WHERE id = $1`,
@@ -14,8 +14,8 @@ export class GenericModelMethods {
   }
 
   static async findByUUID<T extends QueryResultRow>(
-    uuid: string,
-    modelName: string
+    modelName: string,
+    uuid: string
   ): Promise<T | null> {
     const result = await DB.query<T>(
       `SELECT * FROM ${modelName} WHERE uuid = $1`,
@@ -25,13 +25,14 @@ export class GenericModelMethods {
   }
 
   static async find<T extends QueryResultRow>(
+    modelName: string,
     query: string,
-    args: any[],
-    modelName: string
+    args: any[]
   ): Promise<T[] | null> {
-    const result = await DB.query<T>(`SELECT * FROM ${modelName} ${query}`, [
-      args,
-    ]);
+    const result = await DB.query<T>(
+      `SELECT * FROM ${modelName} ${query || ""}`,
+      args
+    );
     return result.rows || null;
   }
 }

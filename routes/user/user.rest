@@ -1,0 +1,14 @@
+
+###
+POST http://localhost:1337/api/user
+Content-Type: application/json
+
+{"first_name": "Kez","last_name": "Anwar", "email": "kezanwar@gmail.com"}
+###
+
+###
+GET http://localhost:1337/api/user
+Content-Type: application/json
+
+###
+

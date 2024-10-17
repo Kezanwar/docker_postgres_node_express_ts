@@ -1,5 +1,5 @@
 import pg from "pg";
-import PersonDB from "./person";
+import User from "@app/models/user";
 
 const { Pool } = pg;
 
@@ -14,7 +14,7 @@ const DB = new Pool({
 export async function connectDB() {
   try {
     await DB.connect();
-    const queries = [PersonDB].map((table) => table.setup()).join();
+    const queries = [User].map((table) => table.setup()).join();
     await DB.query(queries);
     console.log("Postgres connected ✅");
   } catch (error) {

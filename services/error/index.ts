@@ -1,4 +1,4 @@
-import { ErrResp, ResBody } from "@app/types/controller";
+import { ErrResp, ResBody } from "@app/controllers/types";
 
 class APIError extends Error {
   code: number;
@@ -16,7 +16,7 @@ class Err {
   static genericErrMsg = "Sorry, an unexpected error occured";
 
   /* throws an api error to be consumed */
-  static throw(message: string, code: number) {
+  static throw(message: string, code: number): never {
     throw new APIError(message, code);
   }
 
@@ -28,7 +28,7 @@ class Err {
     });
   }
 
-  /* narrows unknown error to an api error */
+  /* narrows an unknown error to an api error */
   static errorHandler(
     error: unknown,
     handleError: (errorObj: APIError) => void
