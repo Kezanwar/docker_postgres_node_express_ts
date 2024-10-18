@@ -1,10 +1,9 @@
-@authToken 
 
 ### Register a new User
 POST http://localhost:1337/api/auth/register
 Content-Type: application/json
 
-{"first_name": "Kez","last_name": "Anwar", "email": "fakich@gmail.com", "password": "Password123!"}
+{"first_name": "James","last_name": "Bond", "email": "007@gmail.com", "password": "Password123!"}
 ###
 
 ### Confirm email through OTP

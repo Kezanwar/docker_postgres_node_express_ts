@@ -12,8 +12,6 @@ const auth = async (
 ) => {
   const token = req.header("x-auth-token");
 
-  console.log("token", token);
-
   try {
     if (!token) {
       Err.throw("No token, authorization denied", 403);
