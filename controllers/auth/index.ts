@@ -17,7 +17,7 @@ const AuthControllers = {
   ) => {
     try {
       const { email, first_name, last_name, password } = req.body;
-      const exists = await User.doesUserAlreadyExist(email);
+      const exists = await User.canUseEmail(email);
       if (exists) {
         Err.throw("A user already exists with this email", 401);
       }

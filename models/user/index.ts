@@ -114,7 +114,7 @@ class User {
     return search?.rows?.[0] || null;
   }
 
-  static async doesUserAlreadyExist(email: string): Promise<boolean> {
+  static async canUseEmail(email: string): Promise<boolean> {
     const search = await DB.query(
       `SELECT  uuid, email, created_at
        FROM ${this.tableName}
