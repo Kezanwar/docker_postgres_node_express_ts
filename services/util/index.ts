@@ -8,6 +8,14 @@ class Util {
   static makeUTCNow() {
     return new Date(new Date().toISOString());
   }
+
+  static sleep(duration = 5000): Promise<string> {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve("awake!");
+      }, duration);
+    });
+  }
 }
 
 export default Util;

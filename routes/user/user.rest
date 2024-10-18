@@ -1,13 +1,17 @@
-
-###
-POST http://localhost:1337/api/user
+### Get a User by uuid
+GET http://localhost:1337/api/user/manage/72746fa2-e032-4fdb-953e-fc7f2230d322
 Content-Type: application/json
 
-{"first_name": "Kez","last_name": "Anwar", "email": "kezanwar@gmail.com"}
 ###
 
+### Delete a User by uuid
+DELETE http://localhost:1337/api/user/manage/adfb5459-ab3a-4f59-9977-8fba4a534826
+Content-Type: application/json
+
 ###
-GET http://localhost:1337/api/user
+
+### Get all Users
+GET http://localhost:1337/api/user/list
 Content-Type: application/json
 
 ###

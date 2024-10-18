@@ -35,4 +35,14 @@ export class GenericModelMethods {
     );
     return result.rows || null;
   }
+
+  static async deleteByUUID(modelName: string, uuid: string): Promise<boolean> {
+    const result = await DB.query(
+      `DELETE FROM ${modelName}
+       WHERE uuid=$1
+      `,
+      [uuid]
+    );
+    return !!result.rowCount;
+  }
 }

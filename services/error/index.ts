@@ -1,6 +1,11 @@
-import { ErrResp, ResBody } from "@app/controllers/types";
+import { Response } from "express";
 
-class APIError extends Error {
+export type ErrResp = {
+  message: string;
+  code: number;
+};
+
+export class APIError extends Error {
   code: number;
   constructor(message: string, code: number) {
     super(message);
@@ -21,7 +26,7 @@ class Err {
   }
 
   /* sends an api error */
-  static send(error: unknown, res: ResBody<ErrResp>) {
+  static send(error: unknown, res: Response<ErrResp>) {
     this.errorHandler(error, (err) => {
       res.statusCode = err.code;
       res.json(err.json_response);

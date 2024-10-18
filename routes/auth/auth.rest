@@ -1,0 +1,6 @@
+### Register a new User
+POST http://localhost:1337/api/auth/register
+Content-Type: application/json
+
+{"first_name": "Simon","last_name": "Thomspon", "email": "son@gmail.com", "password": "Pa"}
+###

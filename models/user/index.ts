@@ -8,19 +8,21 @@ export type TUser = {
   first_name: string;
   last_name: string;
   email: string;
-  auth_method: string;
   password?: string;
+  auth_method: string;
+  otp: string;
+  confirmed_email: boolean;
   created_at: string;
 };
 
-export type TUserClient = Omit<TUser, "id" | "password">;
+export type TUserClient = Omit<TUser, "id" | "password" | "otp">;
 
 type CreateNewUser = {
   first_name: string;
   last_name: string;
   email: string;
   auth_method: string;
-  password?: string;
+  password: string;
 };
 
 class User {
@@ -29,8 +31,10 @@ class User {
   first_name: string;
   last_name: string;
   email: string;
-  auth_method: string;
   password?: string;
+  auth_method: string;
+  otp: string;
+  confirmed_email: boolean;
   created_at: string;
 
   constructor(userObject: TUser) {
@@ -41,6 +45,8 @@ class User {
     this.last_name = userObject.last_name;
     this.email = userObject.email;
     this.password = userObject.password;
+    this.otp = userObject.otp;
+    this.confirmed_email = userObject.confirmed_email;
     this.created_at = userObject.created_at;
   }
 
@@ -57,16 +63,23 @@ class User {
     auth_method varchar(12),
     password varchar(120),
     created_at timestamp
-);
+    );
+    `;
+  }
+
+  static index() {
+    `
+    CREATE INDEX idx_uuid
+    ON ${this.tableName} (uuid);
     `;
   }
 
   static async create(user: CreateNewUser): Promise<User | undefined> {
     const query = await DB.query<TUser>(
       `INSERT INTO ${this.tableName} (
-       uuid, first_name, last_name, email, auth_method, created_at
+       uuid, first_name, last_name, email, auth_method, created_at, password
        ) 
-       VALUES ($1, $2, $3, $4, $5, $6)
+       VALUES ($1, $2, $3, $4, $5, $6, $7)
        RETURNING *`,
       [
         Util.makeUUID(),
@@ -75,6 +88,7 @@ class User {
         user.email,
         user.auth_method,
         Util.makeUTCNow(),
+        user.password,
       ]
     );
 
@@ -85,28 +99,52 @@ class User {
     }
   }
 
-  static findByUUID(uuid: string) {
-    return GenericModelMethods.findByUUID<TUser>(this.tableName, uuid);
-  }
-  static findByID(id: number) {
-    return GenericModelMethods.findByID<TUser>(this.tableName, id);
-  }
-  static find(query: string, args: any[]) {
-    return GenericModelMethods.find<TUser>(this.tableName, query, args);
+  static deleteByUUID(uuid: string) {
+    return GenericModelMethods.deleteByUUID(this.tableName, uuid);
   }
 
-  static async getAll(): Promise<TUser[]> {
+  static async getUserByUUID(uuid: string): Promise<TUserClient | null> {
+    const search = await DB.query(
+      `SELECT *
+       FROM ${this.tableName}
+       WHERE uuid = $1
+       `,
+      [uuid]
+    );
+    return search?.rows?.[0] || null;
+  }
+
+  static async doesUserAlreadyExist(email: string): Promise<boolean> {
+    const search = await DB.query(
+      `SELECT  uuid, email, created_at
+       FROM ${this.tableName}
+       WHERE email = $1
+       `,
+      [email.toLowerCase()]
+    );
+    return !!search?.rows?.[0];
+  }
+
+  static async getUserByEmailWithPassword(uuid: string): Promise<TUser | null> {
+    const search = await DB.query(
+      `SELECT *
+       FROM ${this.tableName}
+       WHERE uuid = $1
+       `,
+      [uuid]
+    );
+    return search?.rows?.[0] || null;
+  }
+
+  static async getUsers(where?: string): Promise<TUser[]> {
     const search = await DB.query(
       `SELECT id, uuid, first_name, last_name, email, created_at
-       FROM ${this.tableName} `,
+       FROM ${this.tableName} 
+       ${where || ""}
+       `,
       []
     );
     return search?.rows || null;
-  }
-
-  static async findByEmail(email: string): Promise<TUser | null> {
-    const search = await this.find(`WHERE email = $1`, [email]);
-    return search?.[0] || null;
   }
 
   async save(): Promise<TUser | null> {
@@ -115,7 +153,13 @@ class User {
        SET first_name = $2, last_name = $3, auth_method = $4, email = $5
        WHERE uuid = $1
        RETURNING *;`,
-      [this.uuid, this.first_name, this.last_name, this.auth_method, this.email]
+      [
+        this.uuid,
+        this.first_name,
+        this.last_name,
+        this.auth_method,
+        this.email.toLowerCase(),
+      ]
     );
 
     return result.rows?.[0] || null;
@@ -128,6 +172,7 @@ class User {
       last_name: this.last_name,
       email: this.email,
       auth_method: this.auth_method,
+      confirmed_email: this.confirmed_email,
       created_at: this.created_at,
     };
   }
