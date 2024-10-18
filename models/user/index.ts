@@ -1,6 +1,7 @@
 import DB from "@app/services/db";
-import { GenericModelMethods } from "../generic";
 import Util from "@app/services/util";
+import Auth from "@app/services/auth";
+import GenericModelMethods from "../generic";
 
 export type TUser = {
   id?: number;
@@ -8,7 +9,7 @@ export type TUser = {
   first_name: string;
   last_name: string;
   email: string;
-  password?: string;
+  password: string;
   auth_method: string;
   otp: string;
   confirmed_email: boolean;
@@ -31,7 +32,7 @@ class User {
   first_name: string;
   last_name: string;
   email: string;
-  password?: string;
+  password: string;
   auth_method: string;
   otp: string;
   confirmed_email: boolean;
@@ -62,6 +63,8 @@ class User {
     email varchar(120),
     auth_method varchar(12),
     password varchar(120),
+    otp varchar(6),
+    confirmed_email bool,
     created_at timestamp
     );
     `;
@@ -77,9 +80,9 @@ class User {
   static async create(user: CreateNewUser): Promise<User | undefined> {
     const query = await DB.query<TUser>(
       `INSERT INTO ${this.tableName} (
-       uuid, first_name, last_name, email, auth_method, created_at, password
+       uuid, first_name, last_name, email, auth_method, created_at, password, otp, confirmed_email
        ) 
-       VALUES ($1, $2, $3, $4, $5, $6, $7)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
        RETURNING *`,
       [
         Util.makeUUID(),
@@ -89,6 +92,8 @@ class User {
         user.auth_method,
         Util.makeUTCNow(),
         user.password,
+        Auth.makeOTP(),
+        false,
       ]
     );
 
@@ -103,7 +108,7 @@ class User {
     return GenericModelMethods.deleteByUUID(this.tableName, uuid);
   }
 
-  static async getUserByUUID(uuid: string): Promise<TUserClient | null> {
+  static async getUserByUUID(uuid: string): Promise<TUser | null> {
     const search = await DB.query(
       `SELECT *
        FROM ${this.tableName}
@@ -138,7 +143,8 @@ class User {
 
   static async getUsers(where?: string): Promise<TUser[]> {
     const search = await DB.query(
-      `SELECT id, uuid, first_name, last_name, email, created_at
+      // `SELECT id, uuid, first_name, last_name, email, created_at
+      `SELECT *
        FROM ${this.tableName} 
        ${where || ""}
        `,
@@ -147,10 +153,12 @@ class User {
     return search?.rows || null;
   }
 
+  // MODEL METHODS
+
   async save(): Promise<TUser | null> {
     const result = await DB.query<TUser>(
       `UPDATE ${User.tableName}
-       SET first_name = $2, last_name = $3, auth_method = $4, email = $5
+       SET first_name = $2, last_name = $3, auth_method = $4, email = $5, otp = $6, confirmed_email = $7
        WHERE uuid = $1
        RETURNING *;`,
       [
@@ -159,6 +167,8 @@ class User {
         this.last_name,
         this.auth_method,
         this.email.toLowerCase(),
+        this.otp,
+        this.confirmed_email,
       ]
     );
 

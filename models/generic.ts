@@ -1,7 +1,7 @@
 import DB from "@app/services/db";
 import { QueryResultRow } from "pg";
 
-export class GenericModelMethods {
+class GenericModelMethods {
   static async findByID<T extends QueryResultRow>(
     modelName: string,
     id: number
@@ -46,3 +46,5 @@ export class GenericModelMethods {
     return !!result.rowCount;
   }
 }
+
+export default GenericModelMethods;
