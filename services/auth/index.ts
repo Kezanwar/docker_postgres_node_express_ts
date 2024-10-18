@@ -2,8 +2,8 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { JWT_SECRET } from "@app/config";
 
-type Payload = string | Buffer;
-type Token = string;
+type Payload = string | Buffer | object;
+export type Token = string;
 
 class Auth {
   //jwt sign
@@ -17,8 +17,8 @@ class Auth {
     return jwt.sign(payload, JWT_SECRET, { expiresIn: "365d" });
   }
   //jwt verify
-  static jwtVerify(token: Token) {
-    return jwt.verify(token, JWT_SECRET);
+  static jwtVerify<T>(token: Token): T {
+    return jwt.verify(token, JWT_SECRET) as T;
   }
 
   static #auth_methods = {

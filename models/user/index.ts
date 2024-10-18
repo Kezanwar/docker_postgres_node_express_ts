@@ -16,7 +16,7 @@ export type TUser = {
   created_at: string;
 };
 
-export type TUserClient = Omit<TUser, "id" | "password" | "otp">;
+export type TUserClient = Omit<TUser, "id" | "password" | "otp" | "uuid">;
 
 type CreateNewUser = {
   first_name: string;
@@ -177,7 +177,6 @@ class User {
 
   toClient(): TUserClient {
     return {
-      uuid: this.uuid,
       first_name: this.first_name,
       last_name: this.last_name,
       email: this.email,

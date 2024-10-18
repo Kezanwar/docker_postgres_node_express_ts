@@ -12,18 +12,20 @@ const auth = async (
 ) => {
   const token = req.header("x-auth-token");
 
+  console.log("token", token);
+
   try {
     if (!token) {
       Err.throw("No token, authorization denied", 403);
     }
     // verify token
-    const decoded = Auth.jwtVerify(token);
+    const decoded = Auth.jwtVerify<{ uuid: string }>(token);
 
     if (!decoded) {
       Err.throw("token not valid", 403);
     }
 
-    const userFromDB = await User.getUserByUUID(decoded.toString());
+    const userFromDB = await User.getUserByUUID(decoded.uuid);
 
     if (!userFromDB) {
       Err.throw("user not found", 403);

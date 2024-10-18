@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import User, { TUserClient } from "@app/models/user";
 import Err, { ErrResp } from "@app/services/error";
-import Auth from "@app/services/auth";
+import Auth, { Token } from "@app/services/auth";
 import { AuthResponse } from "@app/middleware/auth";
 import { SuccessResp } from "../types";
 
@@ -12,10 +12,15 @@ type RegisterPostData = {
   password: string;
 };
 
+type RegisterRespData = {
+  user: TUserClient;
+  token: Token;
+};
+
 const AuthControllers = {
   register: async (
     req: Request<{}, {}, RegisterPostData>,
-    res: Response<TUserClient | ErrResp>
+    res: Response<RegisterRespData | ErrResp>
   ) => {
     try {
       const { email, first_name, last_name, password } = req.body;
@@ -40,7 +45,9 @@ const AuthControllers = {
         Err.throw("Error creating user", 500);
       }
 
-      res.json(user.toClient());
+      const token = Auth.jwtSign30Days({ uuid: user.uuid });
+
+      res.json({ user: user.toClient(), token });
       //TODO: Send an OTP email using an Email Service to the user here
     } catch (error) {
       Err.send(error, res);
