@@ -17,7 +17,6 @@ const validate =
       next();
     } catch (error) {
       if (error instanceof ValidationError) {
-        console.error;
         res.status(403).json({ type: error.name, message: error.errors });
         return;
       }
