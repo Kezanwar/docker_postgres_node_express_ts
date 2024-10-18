@@ -4,22 +4,21 @@ import Routes from "@app/routes";
 import { connectDB } from "@app/services/db";
 import { PORT } from "./config";
 
-/* start services */
+/** @services */
 await connectDB();
 
-/* create app */
-
+/** @app */
 const app = express();
 
-/* init middlewares */
+/** @middlewares */
 app.use(express.json());
 morganBody(app, { prettify: true, logIP: false, logReqUserAgent: false });
 
-/* register routes */
+/** @routes */
 app.get("/", (_, res: Response<string>) => {
   res.json(`Hello from the app on port ${PORT}`);
 });
 app.use("/api", Routes);
 
-/* serve app */
+/** @serve */
 app.listen(PORT, () => console.log(`API running on port ${PORT} 🚀`));
