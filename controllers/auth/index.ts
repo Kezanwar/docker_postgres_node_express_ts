@@ -47,15 +47,15 @@ const AuthControllers = {
     }
   },
   validateOTP: async (
-    req: Request<{ otp: string }>,
+    req: Request<{ code: string }>,
     res: AuthResponse<SuccessResp | ErrResp>
   ) => {
     try {
-      if (!req.params.otp) {
+      if (!req.params.code) {
         Err.throw("Missing OTP in request", 500);
       }
       const user = res.locals.user;
-      const matches = user.otp === req.params.otp;
+      const matches = user.otp === req.params.code;
 
       if (!matches) {
         Err.throw("Incorrect OTP", 500);
