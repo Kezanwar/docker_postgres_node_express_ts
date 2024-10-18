@@ -20,6 +20,10 @@ const validate =
         res.status(403).json({ type: error.name, message: error.errors });
         return;
       }
+      if (error instanceof Error) {
+        res.status(500).json(new APIError(error.message, 500).json_response);
+        return;
+      }
       res
         .status(500)
         .json(

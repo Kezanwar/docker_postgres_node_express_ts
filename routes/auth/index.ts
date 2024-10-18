@@ -7,7 +7,7 @@ import auth from "@app/middleware/auth";
 const AuthRouter = express.Router();
 
 /** @public */
-/** @endpoint /api/auth/registers */
+/** @endpoint /api/auth/register */
 /** @desc registers a new @user */
 AuthRouter.post(
   "/register",
