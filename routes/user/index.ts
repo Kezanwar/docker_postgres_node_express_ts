@@ -1,10 +1,10 @@
 import express from "express";
-import UsersController from "@app/controllers/user";
+import UserControllers from "@app/controllers/user";
 
 const UserRouter = express.Router();
 
-UserRouter.get("/list", UsersController.getAll);
-UserRouter.get("/manage/:uuid", UsersController.get);
-UserRouter.delete("/manage/:uuid", UsersController.delete);
+UserRouter.get("/list", UserControllers.getAll);
+UserRouter.get("/manage/:uuid", UserControllers.get);
+UserRouter.delete("/manage/:uuid", UserControllers.delete);
 
 export default UserRouter;

@@ -1,6 +1,6 @@
 import express from "express";
 import AuthValidation from "@app/validation/auth";
-import AuthController from "@app/controllers/auth";
+import AuthControllers from "@app/controllers/auth";
 import validate from "@app/middleware/validate";
 import auth from "@app/middleware/auth";
 
@@ -12,13 +12,13 @@ const AuthRouter = express.Router();
 AuthRouter.post(
   "/register",
   validate(AuthValidation.registerSchema),
-  AuthController.register
+  AuthControllers.register
 );
 
 /** @private */
 /** @endpoint /api/auth/otp/<@code> */
 /** @desc confirms users email via @otp */
-AuthRouter.post("/otp/:code", auth, AuthController.validateOTP);
+AuthRouter.post("/otp/:code", auth, AuthControllers.validateOTP);
 
 // AuthRouter.get("/otp", auth, AuthController.validateOTP);
 // AuthRouter.post("/login", AuthController.register);

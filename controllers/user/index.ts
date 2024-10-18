@@ -6,7 +6,7 @@ type DeleteUserResponse = {
   message: string;
 };
 
-const UsersController = {
+const UserControllers = {
   getAll: async (_: Request, res: Response<TUserClient[] | ErrResp>) => {
     try {
       const users = await User.getUsers();
@@ -45,4 +45,4 @@ const UsersController = {
   },
 };
 
-export default UsersController;
+export default UserControllers;
