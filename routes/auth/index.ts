@@ -7,7 +7,7 @@ import auth from "@app/middleware/auth";
 const AuthRouter = express.Router();
 
 /** @public /api/auth/register */
-/** @desc registers a new @user */
+/** @desc registers a @user returns @user & @jwt */
 AuthRouter.post(
   "/register",
   validate(AuthValidation.registerSchema),
@@ -19,7 +19,7 @@ AuthRouter.post(
 AuthRouter.post("/otp/:code", auth, AuthControllers.validateOTP);
 
 /** @public /api/auth/login */
-/** @desc logins a @user */
+/** @desc logins a @user returns @user & @jwt */
 AuthRouter.post(
   "/login",
   validate(AuthValidation.loginSchema),
@@ -27,7 +27,7 @@ AuthRouter.post(
 );
 
 /** @private /api/auth/initialize */
-/** @desc returns @user */
+/** @desc validates a user with @jwt returns @user */
 AuthRouter.post("/initialize", auth, AuthControllers.initialize);
 
 export default AuthRouter;
