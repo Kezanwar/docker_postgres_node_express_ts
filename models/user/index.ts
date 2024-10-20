@@ -108,7 +108,7 @@ class User {
     return GenericModelMethods.deleteByUUID(this.tableName, uuid);
   }
 
-  static async getUserByUUID(uuid: string): Promise<TUser | null> {
+  static async getUserByUUID(uuid: string): Promise<User | null> {
     const search = await DB.query(
       `SELECT *
        FROM ${this.tableName}
@@ -116,7 +116,8 @@ class User {
        `,
       [uuid]
     );
-    return search?.rows?.[0] || null;
+
+    return search?.rows?.[0] ? new User(search.rows[0]) : null;
   }
 
   static async canUseEmail(email: string): Promise<boolean> {
@@ -130,15 +131,15 @@ class User {
     return !!search?.rows?.[0];
   }
 
-  static async getUserByEmailWithPassword(uuid: string): Promise<TUser | null> {
+  static async getUserByEmail(email: string): Promise<User | null> {
     const search = await DB.query(
       `SELECT *
        FROM ${this.tableName}
-       WHERE uuid = $1
+       WHERE email = $1
        `,
-      [uuid]
+      [email]
     );
-    return search?.rows?.[0] || null;
+    return search?.rows?.[0] ? new User(search.rows[0]) : null;
   }
 
   static async getUsers(where?: string): Promise<TUser[]> {

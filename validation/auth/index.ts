@@ -9,6 +9,12 @@ const AuthValidation = {
       password: string().min(8).max(32).required(),
     }),
   }),
+  loginSchema: object({
+    body: object({
+      email: string().email().required(),
+      password: string().min(8).max(32).required(),
+    }),
+  }),
 };
 
 export default AuthValidation;

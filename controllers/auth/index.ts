@@ -12,7 +12,12 @@ type RegisterPostData = {
   password: string;
 };
 
-type RegisterRespData = {
+type LoginPostData = {
+  email: string;
+  password: string;
+};
+
+type CredentialsRespData = {
   user: TUserClient;
   token: Token;
 };
@@ -20,7 +25,7 @@ type RegisterRespData = {
 const AuthControllers = {
   register: async (
     req: Request<{}, {}, RegisterPostData>,
-    res: Response<RegisterRespData | ErrResp>
+    res: Response<CredentialsRespData | ErrResp>
   ) => {
     try {
       const { email, first_name, last_name, password } = req.body;
@@ -61,6 +66,13 @@ const AuthControllers = {
       if (!req.params.code) {
         Err.throw("Missing OTP in request", 500);
       }
+      if (res.locals.user.confirmed_email) {
+        Err.throw("Your email address has already been confirmed", 403);
+      }
+      if (!Auth.isValidOTP(req.params.code)) {
+        Err.throw("Invalid OTP", 403);
+      }
+
       const user = res.locals.user;
       const matches = user.otp === req.params.code;
 
@@ -73,6 +85,29 @@ const AuthControllers = {
       await user.save();
 
       res.json({ message: "Successfully confirmed your email" });
+    } catch (error) {
+      Err.send(error, res);
+    }
+  },
+  login: async (
+    req: Request<{}, {}, LoginPostData>,
+    res: Response<CredentialsRespData | ErrResp>
+  ) => {
+    const { email, password } = req.body;
+    try {
+      const user = await User.getUserByEmail(email);
+
+      if (!user) {
+        Err.throw("A user with that email address can't be found", 404);
+      }
+
+      if (!(await Auth.comparePasswordToHash(password, user.password))) {
+        Err.throw("Incorrect password", 401);
+      }
+
+      const token = Auth.jwtSign30Days({ uuid: user.uuid });
+
+      res.json({ user: user.toClient(), token });
     } catch (error) {
       Err.send(error, res);
     }

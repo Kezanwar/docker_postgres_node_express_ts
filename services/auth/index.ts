@@ -51,6 +51,17 @@ class Auth {
     return arr.join("");
   }
 
+  static isValidOTP(otp: string): boolean {
+    if (otp.length !== 6) return false;
+    const split = otp.split("");
+    for (let char of split) {
+      if (isNaN(Number(char))) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   static async hashUserGeneratedPW(password: string) {
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);

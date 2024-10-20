@@ -11,3 +11,10 @@ POST http://localhost:1337/api/auth/otp/526595
 Content-Type: application/json
 x-auth-token: {{token}}
 ###
+
+### Login with Email and Password
+POST http://localhost:1337/api/auth/login
+Content-Type: application/json
+
+{"email": "007@gmail.com", "password": "Password123!"}
+###

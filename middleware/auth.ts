@@ -23,13 +23,13 @@ const auth = async (
       Err.throw("token not valid", 403);
     }
 
-    const userFromDB = await User.getUserByUUID(decoded.uuid);
+    const user = await User.getUserByUUID(decoded.uuid);
 
-    if (!userFromDB) {
+    if (!user) {
       Err.throw("user not found", 403);
     }
 
-    res.locals.user = new User(userFromDB);
+    res.locals.user = user;
 
     //  call next to continue to the next middleware with the new validated user in req object
     next();

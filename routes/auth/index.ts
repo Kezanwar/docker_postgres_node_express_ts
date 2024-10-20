@@ -6,8 +6,7 @@ import auth from "@app/middleware/auth";
 
 const AuthRouter = express.Router();
 
-/** @public */
-/** @endpoint /api/auth/register */
+/** @public /api/auth/register */
 /** @desc registers a new @user */
 AuthRouter.post(
   "/register",
@@ -15,10 +14,17 @@ AuthRouter.post(
   AuthControllers.register
 );
 
-/** @private */
-/** @endpoint /api/auth/otp/<@code> */
+/** @private /api/auth/otp/<@code> */
 /** @desc confirms users email via @otp */
 AuthRouter.post("/otp/:code", auth, AuthControllers.validateOTP);
+
+/** @public /api/auth/login */
+/** @desc logins a @user */
+AuthRouter.post(
+  "/login",
+  validate(AuthValidation.loginSchema),
+  AuthControllers.login
+);
 
 // AuthRouter.get("/otp", auth, AuthController.validateOTP);
 // AuthRouter.post("/login", AuthController.register);
