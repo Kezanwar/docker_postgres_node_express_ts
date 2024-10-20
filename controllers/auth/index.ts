@@ -22,6 +22,10 @@ type CredentialsRespData = {
   token: Token;
 };
 
+type InitializeRespData = {
+  user: TUserClient;
+};
+
 const AuthControllers = {
   register: async (
     req: Request<{}, {}, RegisterPostData>,
@@ -108,6 +112,16 @@ const AuthControllers = {
       const token = Auth.jwtSign30Days({ uuid: user.uuid });
 
       res.json({ user: user.toClient(), token });
+    } catch (error) {
+      Err.send(error, res);
+    }
+  },
+  initialize: async (
+    _: Request,
+    res: AuthResponse<InitializeRespData | ErrResp>
+  ) => {
+    try {
+      res.json({ user: res.locals.user.toClient() });
     } catch (error) {
       Err.send(error, res);
     }

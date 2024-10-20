@@ -18,3 +18,10 @@ Content-Type: application/json
 
 {"email": "007@gmail.com", "password": "Password123!"}
 ###
+
+### Initialize with JWT
+POST http://localhost:1337/api/auth/initialize
+Content-Type: application/json
+x-auth-token: {{token}}
+
+###

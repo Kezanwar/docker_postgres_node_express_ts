@@ -26,8 +26,8 @@ AuthRouter.post(
   AuthControllers.login
 );
 
-// AuthRouter.get("/otp", auth, AuthController.validateOTP);
-// AuthRouter.post("/login", AuthController.register);
-// AuthRouter.post("/initialize", AuthController.register);
+/** @private /api/auth/initialize */
+/** @desc returns @user */
+AuthRouter.post("/initialize", auth, AuthControllers.initialize);
 
 export default AuthRouter;

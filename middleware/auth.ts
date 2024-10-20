@@ -5,11 +5,7 @@ import User from "@app/models/user";
 
 export type AuthResponse<T> = Response<T, { user: User }>;
 
-const auth = async (
-  req: Request,
-  res: AuthResponse<{}>,
-  next: NextFunction
-) => {
+const auth = async (req: Request, res: Response, next: NextFunction) => {
   const token = req.header("x-auth-token");
 
   try {
