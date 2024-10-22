@@ -27,7 +27,7 @@ AuthRouter.post(
 );
 
 /** @private /api/auth/initialize */
-/** @desc validates a user with @jwt returns @user */
+/** @desc validates a user session with @jwt returns @user */
 AuthRouter.post("/initialize", auth, AuthControllers.initialize);
 
 export default AuthRouter;

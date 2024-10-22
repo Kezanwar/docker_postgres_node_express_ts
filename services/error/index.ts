@@ -12,7 +12,7 @@ export class APIError extends Error {
     this.code = code;
   }
 
-  get json_response(): ErrResp {
+  toJSON(): ErrResp {
     return { message: this.message, code: this.code };
   }
 }
@@ -29,7 +29,7 @@ class Err {
   static send(error: unknown, res: Response<ErrResp>) {
     this.errorHandler(error, (err) => {
       res.statusCode = err.code;
-      res.json(err.json_response);
+      res.json(err);
     });
   }
 

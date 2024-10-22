@@ -21,14 +21,12 @@ const validate =
         return;
       }
       if (error instanceof Error) {
-        res.status(500).json(new APIError(error.message, 500).json_response);
+        res.status(500).json(new APIError(error.message, 500));
         return;
       }
       res
         .status(500)
-        .json(
-          new APIError("Sorry, an unexpected error occured", 500).json_response
-        );
+        .json(new APIError("Sorry, an unexpected error occured", 500));
     }
   };
 
