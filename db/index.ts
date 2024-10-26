@@ -5,9 +5,8 @@ const db = drizzle(process.env.DATABASE_URL!);
 
 export default db;
 
-export async function validateConntection() {
+export async function checkDBConnection() {
   try {
-    // Simple query to verify the connection
     await db.select({}).from(usersTable).limit(1);
     console.log("Drizzle is connected to PostgreSQL 🚀");
   } catch (error) {
