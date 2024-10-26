@@ -1,5 +1,5 @@
 import { boolean, index, integer, pgTable, varchar } from "drizzle-orm/pg-core";
-import timestamps from "../helpers/timestamps";
+import timestamps from "../common/timestamps";
 import Util from "@app/services/util";
 import Auth from "@app/services/auth";
 

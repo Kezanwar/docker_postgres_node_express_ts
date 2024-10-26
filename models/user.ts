@@ -1,7 +1,7 @@
-import db from "@app/db";
-import usersTable, { SelectUser, InsertUser } from "@app/db/schema/users";
-import Util from "@app/services/util";
 import { eq } from "drizzle-orm";
+import db from "@app/db";
+import usersTable, { SelectUser, InsertUser } from "@app/db/schemas/users";
+import Util from "@app/services/util";
 
 export type TUserClient = Omit<SelectUser, "id" | "password" | "otp" | "uuid">;
 

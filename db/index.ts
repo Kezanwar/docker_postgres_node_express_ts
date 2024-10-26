@@ -1,5 +1,5 @@
 import { drizzle } from "drizzle-orm/node-postgres";
-import usersTable from "./schema/users";
+import usersTable from "./schemas/users";
 
 const db = drizzle(process.env.DATABASE_URL!);
 
