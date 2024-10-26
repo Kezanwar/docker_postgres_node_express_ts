@@ -11,7 +11,7 @@ services:
     build: .
     develop:
       watch:
-        - action: sync+restart
+        - action: sync
           path: ./
           target: /usr/src/app
           ignore:

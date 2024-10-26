@@ -1,11 +1,11 @@
 import express, { Response } from "express";
 import morganBody from "morgan-body";
 import Routes from "@app/routes";
-import { connectDB } from "@app/services/db";
 import { PORT } from "./config";
+import { validateConntection } from "./db";
 
 /** @services */
-await connectDB();
+await validateConntection();
 
 /** @app */
 const app = express();

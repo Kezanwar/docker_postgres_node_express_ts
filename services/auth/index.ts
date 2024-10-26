@@ -41,6 +41,10 @@ class Auth {
     return check === this.#auth_methods.google;
   }
 
+  static get auth_methods_enum(): [string, ...string[]] {
+    return [this.#auth_methods.jwt, this.#auth_methods.google];
+  }
+
   static makeOTP(): string {
     const arr = [];
     let start = 0;

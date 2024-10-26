@@ -1,0 +1,5 @@
+{
+  "ext": "*.ts",
+  "verbose": true,
+  "exec": "node --env-file='.env' --import=tsx app.ts"
+}

@@ -6,3 +6,7 @@ dev:
 
 down:
 	@docker compose down
+
+driz-generate:
+	@npx drizzle-kit generate
+

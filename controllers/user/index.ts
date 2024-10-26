@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
-import User, { TUserClient } from "@app/models/user";
+
 import Err, { ErrResp } from "@app/services/error";
+import User, { TUserClient } from "@app/models/user";
 
 type DeleteUserResponse = {
   message: string;
@@ -24,7 +25,7 @@ const UserControllers = {
       if (!user) {
         Err.throw("Couldn't find user", 404);
       }
-      res.json(user);
+      res.json(user.toClient());
     } catch (error) {
       Err.send(error, res);
     }

@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import User, { TUserClient } from "@app/models/user";
 import Err, { ErrResp } from "@app/services/error";
 import Auth, { Token } from "@app/services/auth";
 import { AuthResponse } from "@app/middleware/auth";
 import { SuccessResp } from "../types";
+import User, { TUserClient } from "@app/models/user";
 
 type RegisterPostData = {
   first_name: string;
@@ -54,7 +54,7 @@ const AuthControllers = {
         Err.throw("Error creating user", 500);
       }
 
-      const token = Auth.jwtSign30Days({ uuid: user.uuid });
+      const token = Auth.jwtSign30Days({ uuid: user.data.uuid });
 
       res.json({ user: user.toClient(), token });
       //TODO: Send an OTP email using an Email Service to the user here
@@ -70,7 +70,7 @@ const AuthControllers = {
       if (!req.params.code) {
         Err.throw("Missing OTP in request", 500);
       }
-      if (res.locals.user.confirmed_email) {
+      if (res.locals.user.data.confirmed_email) {
         Err.throw("Your email address has already been confirmed", 403);
       }
       if (!Auth.isValidOTP(req.params.code)) {
@@ -78,13 +78,13 @@ const AuthControllers = {
       }
 
       const user = res.locals.user;
-      const matches = user.otp === req.params.code;
+      const matches = user.data.otp === req.params.code;
 
       if (!matches) {
         Err.throw("Incorrect OTP", 500);
       }
 
-      user.confirmed_email = true;
+      user.data.confirmed_email = true;
 
       await user.save();
 
@@ -105,11 +105,11 @@ const AuthControllers = {
         Err.throw("A user with that email address can't be found", 404);
       }
 
-      if (!(await Auth.comparePasswordToHash(password, user.password))) {
+      if (!(await Auth.comparePasswordToHash(password, user.data.password))) {
         Err.throw("Incorrect password", 401);
       }
 
-      const token = Auth.jwtSign30Days({ uuid: user.uuid });
+      const token = Auth.jwtSign30Days({ uuid: user.data.uuid });
 
       res.json({ user: user.toClient(), token });
     } catch (error) {

@@ -1,8 +1,9 @@
 import express from "express";
-import AuthValidation from "@app/validation/auth";
+
 import AuthControllers from "@app/controllers/auth";
 import validate from "@app/middleware/validate";
 import auth from "@app/middleware/auth";
+import AuthValidation from "@app/validation/auth";
 
 const AuthRouter = express.Router();
 

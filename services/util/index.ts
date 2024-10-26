@@ -6,7 +6,7 @@ class Util {
   }
 
   static makeUTCNow() {
-    return new Date(new Date().toISOString());
+    return new Date().toISOString();
   }
 
   static sleep(duration = 5000): Promise<string> {

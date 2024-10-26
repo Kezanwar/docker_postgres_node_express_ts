@@ -7,7 +7,7 @@ Content-Type: application/json
 ###
 
 ### Confirm email through OTP
-POST http://localhost:1337/api/auth/otp/526595
+POST http://localhost:1337/api/auth/otp/593597
 Content-Type: application/json
 x-auth-token: {{token}}
 ###
